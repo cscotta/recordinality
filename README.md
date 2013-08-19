@@ -24,7 +24,7 @@ The premise is straightforward: the cardinality of a stream can be estimated by 
 
 **Implementing Recordinality**
 
-Interest piqued, Jérémie challenged me over dinner to implement it. Armed with Timon's advice on "how to implement a paper," I read and re-read it making notes. A Saturday morning found me at [Sightglass](https://sightglasscoffee.com/) sitting down with the paper, a cup of Blueboon, and my laptop to begin implementation. One cup and a couple bugs later, I arrived at a working implementation of Recordinality and shuffled home to verify my results against those claimed by the paper against a known input set, which matched.
+Interest piqued, Jérémie challenged me over dinner to implement it. Armed with Timon's advice on "[how to implement a paper](http://taco.cat/files/Screen%20Shot%202013-08-19%20at%202.58.36%20PM-N2VAMCNBev.png), ([slides](https://docs.google.com/presentation/d/12mMdn5cjA-MhrbJSP6ThjIAs-YACWJ1p6BeSTXW0P4Q/edit?usp=sharing))" I read and re-read it making notes. A Saturday morning found me at [Sightglass](https://sightglasscoffee.com/) sitting down with the paper, a cup of Blueboon, and my laptop to begin implementation. One cup and a couple bugs later, I arrived at a working implementation of Recordinality and shuffled home to verify my results against those claimed by the paper against a known input set, which matched.
 
 Here's an implementation of Recordinality in Java, comments added:
 https://github.com/cscotta/recordinality/blob/master/src/main/java/com/cscotta/recordinality/Recordinality.java
@@ -56,3 +56,7 @@ You can run this test yourself by cloning the repo and typing `mvn test`. Here i
 The implementation of Recordinality was driven by practical needs as much as it was by a desire to encourage greater cross-pollination between industry and academia. This is the first known open source implementation of this algorithm I'm aware of, and the only cardinality estimation sketch that provides distinct value sampling and the frequency of each. Working with Jérémie to understand and implement Recordinality was a pleasure (as most evenings talking shop that end at 2 am at Pilsner Inn are)! It's always a delight to see unique and useful algorithms spawn open source implementations for use by others coming after.
 
 Thanks, Jérémie!
+
+---
+
+Here are the [slides](https://speakerdeck.com/timonk/philippe-flajolets-contribution-to-streaming-algorithms) presented by Jérémie, along with a [video of the original presentation](http://www.youtube.com/watch?v=Xigaf8npHoI).
