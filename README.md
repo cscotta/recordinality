@@ -24,7 +24,7 @@ The premise is straightforward: the cardinality of a stream can be estimated by 
 
 **Implementing Recordinality**
 
-Interest piqued, Jérémie challenged me over dinner to implement it. Armed with Timon's advice on "[how to implement a paper](http://taco.cat/files/Screen%20Shot%202013-08-19%20at%202.58.36%20PM-N2VAMCNBev.png), ([slides](https://docs.google.com/presentation/d/12mMdn5cjA-MhrbJSP6ThjIAs-YACWJ1p6BeSTXW0P4Q/edit?usp=sharing))" I read and re-read it making notes. A Saturday morning found me at [Sightglass](https://sightglasscoffee.com/) sitting down with the paper, a cup of Blueboon, and my laptop to begin implementation. One cup and a couple bugs later, I arrived at a working implementation of Recordinality and shuffled home to verify my results against those claimed by the paper against a known input set, which matched.
+Interest piqued, Jérémie challenged me over dinner to implement it. Armed with Timon's advice on "[how to implement a paper](http://taco.cat/files/Screen%20Shot%202013-08-19%20at%202.58.36%20PM-N2VAMCNBev.png)" ([slides](https://docs.google.com/presentation/d/12mMdn5cjA-MhrbJSP6ThjIAs-YACWJ1p6BeSTXW0P4Q/edit?usp=sharing)), I read and re-read it making notes. A Saturday morning found me at [Sightglass](https://sightglasscoffee.com/) sitting down with the paper, a cup of Blueboon, and my laptop to begin implementation. One cup and a couple bugs later, I arrived at a working implementation of Recordinality and shuffled home to verify my results against those claimed by the paper against a known input set, which matched.
 
 Here's an implementation of Recordinality in Java, comments added:
 https://github.com/cscotta/recordinality/blob/master/src/main/java/com/cscotta/recordinality/Recordinality.java
@@ -38,16 +38,16 @@ The Recordinality paper includes mean cardinality and error estimates for k-valu
 
 [Note: The source text used in the paper is listed as containing 3031 distinct words. The copy I've obtained for verification and based implementation stats on below from Project Gutenberg contained 3193 distinct words. It is included in this repository.]
 
-| Size | Paper Mean (Expected: 3031) | Paper Error | Impl Mean (Expected: 3193) | Impl Error |
-|--------|-----------------------------|-------------|----------------------------|------------|
-| 4      | 2737 | 1.04 | 3127 | 1.61 |
-| 8      | 2811 | 0.73 | 3205 | 0.92 |
-| 16     | 3040 | 0.54 | 3204 | 0.55 |
-| 32     | 3010 | 0.34 | 3195 | 0.35 |
-| 64     | 3020 | 0.22 | 3200 | 0.22 |
-| 128    | 3042 | 0.14 | 3194 | 0.13 |
-| 256    | 3044 | 0.08 | 3193 | 0.08 |
-| 512    | 3043 | 0.04 | 3191 | 0.04 |
+| Size | Paper Mean (Expected: 3031) | Paper Error | Impl Mean (Expected: 3193) | Impl Error | Mean Run Time |
+|--------|---------------------------|-------------|----------------------------|------------|---------------|
+| 4      | 2737 | 1.04 | 3127 | 1.61 | 5ms   |
+| 8      | 2811 | 0.73 | 3205 | 0.92 | 5ms   |
+| 16     | 3040 | 0.54 | 3204 | 0.55 | 6ms   |
+| 32     | 3010 | 0.34 | 3195 | 0.35 | 7ms   |
+| 64     | 3020 | 0.22 | 3200 | 0.22 | 10ms  |
+| 128    | 3042 | 0.14 | 3194 | 0.13 | 19ms  |
+| 256    | 3044 | 0.08 | 3193 | 0.08 | 38ms  |
+| 512    | 3043 | 0.04 | 3191 | 0.04 | 116ms |
 
 You can run this test yourself by cloning the repo and typing `mvn test`. Here is an example of the expected output: https://gist.github.com/cscotta/8fddc06871d8543df897
 
