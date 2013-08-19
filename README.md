@@ -3,9 +3,9 @@
 
 **Cardinality Estimation**
 
-Determining the number of unique elements that make up a stream is a frequently-encountered problem in stream processing. A few applications include counting the number of unique visitors to a website or determining the number of unique hosts communicating with an application cluster. In both cases, the number can be arbitrarily large, making it infeasible to maintain a map containing each unique value and just counting the elements. Instead, we turn to a category of algorithms called "sketches." Sketches help us estimate the cardinality of infinite streams using very little memory and with bounded error estimates.
+Determining the number of unique elements that make up a stream is a frequently-encountered problem in stream processing. A few applications include counting the number of unique visitors to a website or determining the number of unique hosts communicating with an application cluster. In both cases, the number can be arbitrarily large, making it infeasible to maintain a map containing each unique value and just counting the elements. Instead, we turn to a category of algorithms called "[sketches](http://blog.aggregateknowledge.com/2011/09/13/streaming-algorithms-and-sketches/)." Sketches help us estimate the cardinality of infinite streams using very little memory and with bounded error estimates.
 
-HyperLogLog is an excellent choice for streaming cardinality estimation in most cases. However, HLL is simply an estimator - it is a tool that does one thing, and one thing very well. At Aggregate Knowledge's May SketchConf, Jérémie Lumbroso introduced me to another lesser-known sketch called "Recordinality." Here is the paper describing it.
+[HyperLogLog](http://blog.aggregateknowledge.com/2012/10/25/sketch-of-the-day-hyperloglog-cornerstone-of-a-big-data-infrastructure/) is an excellent choice for streaming cardinality estimation in most cases. However, HLL is simply an estimator - it is a tool that does one thing, and one thing very well. At Aggregate Knowledge's May SketchConf, Jérémie Lumbroso introduced me to another lesser-known sketch called "Recordinality." Here is [the paper](http://www-apr.lip6.fr/~lumbroso/Publications/HeLuMaVi12.pdf) describing it.
 
 **Recordinality**
 
@@ -16,7 +16,7 @@ Recordinality is unique in that it provides cardinality estimation like HLL, but
 Beyond these unique properties, Recordinality is especially interesting due to its simplicity. Here's how it works:
 
   1. Initialize a set of size k (the size of this set determines the accuracy of our estimates)
-  2. Compute the hash of each incoming element in the stream using a hash function such as MurmurHash3.
+  2. Compute the hash of each incoming element in the stream using a hash function such as [MurmurHash3](https://sites.google.com/site/murmurhash/).
   3. If the k-set is not full, insert the hash value. If the set is full, determine if the value of the hash is greater than the lowest hash currently in the set. If so, replace it. If not, ignore it.
   4. Each time we add or replace an element in the k-set, increment a counter.
 
@@ -24,7 +24,7 @@ The premise is straightforward: the cardinality of a stream can be estimated by 
 
 **Implementing Recordinality**
 
-Interest piqued, Jérémie challenged me over dinner to implement it. Armed with Timon's advice on "how to implement a paper," I read and re-read it making notes. A Saturday morning found me at Sightglass sitting down with the paper, a cup of Blueboon, and my laptop to begin implementation. One cup and a couple bugs later, I arrived at a working implementation of Recordinality and shuffled home to verify my results against those claimed by the paper against a known input set, which matched.
+Interest piqued, Jérémie challenged me over dinner to implement it. Armed with Timon's advice on "how to implement a paper," I read and re-read it making notes. A Saturday morning found me at [Sightglass](https://sightglasscoffee.com/) sitting down with the paper, a cup of Blueboon, and my laptop to begin implementation. One cup and a couple bugs later, I arrived at a working implementation of Recordinality and shuffled home to verify my results against those claimed by the paper against a known input set, which matched.
 
 Here's an implementation of Recordinality in Java, comments added:
 https://github.com/cscotta/recordinality/blob/master/src/main/java/com/cscotta/recordinality/Recordinality.java
@@ -34,9 +34,9 @@ This implementation is both threadsafe and lockless in the common case, allowing
 
 **Performance**
 
-The Recordinality paper includes mean cardinality and error estimates for k-values from 4 to 512 against a publicly-available dataset – namely, the text of A Midsummer Night's Dream. Here is a comparison of the results included in the paper versus those emitted by the unit test included with this implementation.
+The Recordinality paper includes mean cardinality and error estimates for k-values from 4 to 512 against a publicly-available dataset – namely, the text of A Midsummer Night's Dream. Here is a comparison of the results included in the paper versus those emitted by the unit test included with this implementation. The values recorded below are the results of 10,000 runs.
 
-[Note: The source text used in the paper is listed as containing 3031 distinct words. The copy I've obtained for verification and based implementation stats on below from Project Gutenberg contained 3193 distinct words.]
+[Note: The source text used in the paper is listed as containing 3031 distinct words. The copy I've obtained for verification and based implementation stats on below from Project Gutenberg contained 3193 distinct words. It is included in this repository.]
 
 | Size | Paper Mean (Expected: 3031) | Paper Error | Impl Mean (Expected: 3193) | Impl Error |
 |--------|-----------------------------|-------------|----------------------------|------------|
@@ -53,6 +53,6 @@ You can run this test yourself by cloning the repo and typing `mvn test`. Here i
 
 **Epilogue**
 
-The implementation of Recordinality was driven by practical needs as much as it was by a desire to encourage greater cross-pollination between industry and academia. This is the first known open source implementation of this algorithm I'm aware of, and the only cardinality estimation sketch that provides distinct value sampling and the frequency of each. Working with Jérémie to understand and implement Recordinality was a pleasure. It's always a delight to see unique and useful algorithms spawn open source implementations for use by others coming after.
+The implementation of Recordinality was driven by practical needs as much as it was by a desire to encourage greater cross-pollination between industry and academia. This is the first known open source implementation of this algorithm I'm aware of, and the only cardinality estimation sketch that provides distinct value sampling and the frequency of each. Working with Jérémie to understand and implement Recordinality was a pleasure (as most evenings talking shop that end at 2 am at Pilsner Inn are)! It's always a delight to see unique and useful algorithms spawn open source implementations for use by others coming after.
 
 Thanks, Jérémie!
