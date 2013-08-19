@@ -87,7 +87,7 @@ public class Recordinality {
         long hashedValue = hash.hashString(element).asLong();
 
         // Short-circuit if our k-set is saturated. Common case.
-        if (kMap.size() >= sampleSize && hashedValue < cachedMin.get())
+        if (hashedValue < cachedMin.get() && kMap.size() >= sampleSize)
             return false;
 
         synchronized (this) {
