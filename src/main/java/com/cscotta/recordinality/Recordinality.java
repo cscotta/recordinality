@@ -17,6 +17,7 @@
 package com.cscotta.recordinality;
 
 import java.util.Set;
+import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,7 +28,8 @@ import com.google.common.collect.ImmutableSet;
 public class Recordinality {
 
     private final int sampleSize;
-    private final HashFunction hash = Hashing.murmur3_128();
+    private final int seed = new Random().nextInt();
+    private final HashFunction hash = Hashing.murmur3_128(seed);
     private final AtomicLong modifications = new AtomicLong(0);
     private final AtomicLong cachedMin = new AtomicLong(Long.MIN_VALUE);
     private final ConcurrentSkipListMap<Long, Element> kMap =
