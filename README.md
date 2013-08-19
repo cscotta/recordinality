@@ -40,14 +40,14 @@ The Recordinality paper includes mean cardinality and error estimates for k-valu
 
 | Size | Paper Mean (Expected: 3031) | Paper Error | Impl Mean (Expected: 3193) | Impl Error | Mean Run Time |
 |--------|---------------------------|-------------|----------------------------|------------|---------------|
-| 4      | 2737 | 1.04 | 3127 | 1.61 | 5ms   |
-| 8      | 2811 | 0.73 | 3205 | 0.92 | 5ms   |
-| 16     | 3040 | 0.54 | 3204 | 0.55 | 6ms   |
-| 32     | 3010 | 0.34 | 3195 | 0.35 | 7ms   |
-| 64     | 3020 | 0.22 | 3200 | 0.22 | 10ms  |
-| 128    | 3042 | 0.14 | 3194 | 0.13 | 19ms  |
-| 256    | 3044 | 0.08 | 3193 | 0.08 | 38ms  |
-| 512    | 3043 | 0.04 | 3191 | 0.04 | 116ms |
+| 4      | 2737 | 1.04 | 3127 | 1.53 | 6ms   |
+| 8      | 2811 | 0.73 | 3205 | 0.88 | 6ms   |
+| 16     | 3040 | 0.54 | 3204 | 0.56 | 7ms   |
+| 32     | 3010 | 0.34 | 3195 | 0.34 | 7ms   |
+| 64     | 3020 | 0.22 | 3200 | 0.22 | 11ms  |
+| 128    | 3042 | 0.14 | 3194 | 0.13 | 17ms  |
+| 256    | 3044 | 0.08 | 3193 | 0.08 | 32ms  |
+| 512    | 3043 | 0.04 | 3191 | 0.04 | 90ms |
 
 You can run this test yourself by cloning the repo and typing `mvn test`. Here is an example of the expected output: https://gist.github.com/cscotta/8fddc06871d8543df897
 
@@ -60,3 +60,5 @@ Thanks, Jérémie!
 ---
 
 Here are the [slides](https://speakerdeck.com/timonk/philippe-flajolets-contribution-to-streaming-algorithms) presented by Jérémie, along with a [video of the original presentation](http://www.youtube.com/watch?v=Xigaf8npHoI).
+
+**Update:** Thanks to Phillip Warren (@pkwarren) for catching a check against CSLM.size() that should have been short-circuited by a call to cachedMin.get() in the common case. Updated run time stats and performance above following this change. A few more similar changes will follow shortly.
