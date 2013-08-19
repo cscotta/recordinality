@@ -56,11 +56,9 @@ public class Recordinality {
      * http://www-apr.lip6.fr/~lumbroso/Publications/HeLuMaVi12.pdf
      */
     public long estimateCardinality() {
-        synchronized (this) {
-            long pow = modifications.get() - sampleSize + 1;
-            double estimate = (sampleSize * (Math.pow(1 + (1.0 / sampleSize), pow))) - 1;
-            return (long) estimate;
-        }
+        long pow = modifications.get() - sampleSize + 1;
+        double estimate = (sampleSize * (Math.pow(1 + (1.0 / sampleSize), pow))) - 1;
+        return (long) estimate;
     }
 
     /*
@@ -69,21 +67,17 @@ public class Recordinality {
      * see §2 Theorem 2: http://www-apr.lip6.fr/~lumbroso/Publications/HeLuMaVi12.pdf
      */
     public double estimateError() {
-        synchronized (this) {
-            double estCardinality = estimateCardinality();
-            double error = Math.sqrt(Math.pow(
-                (estCardinality / (sampleSize * Math.E)), (1.0 / sampleSize)) - 1);
-            return error;
-        }
-    }
+        double estCardinality = estimateCardinality();
+        double error = Math.sqrt(Math.pow(
+            (estCardinality / (sampleSize * Math.E)), (1.0 / sampleSize)) - 1);
+        return error;
+     }
 
     /*
      * Returns the current set of k-records observed in the stream.
      */
     public Set<Element> getSample() {
-        synchronized (this) {
-            return ImmutableSet.copyOf(kMap.values());
-        }
+        return ImmutableSet.copyOf(kMap.values());
     }
 
     /*
