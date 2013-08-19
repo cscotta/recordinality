@@ -34,6 +34,7 @@ public class Recordinality {
     private final AtomicLong cachedMin = new AtomicLong(Long.MIN_VALUE);
     private final ConcurrentSkipListMap<Long, Element> kMap =
         new ConcurrentSkipListMap<Long, Element>();
+    private volatile int kMapSize = 0;
 
     /*
      * Initializes a new Recordinality instance with a configurable 'k'-size.
@@ -87,24 +88,27 @@ public class Recordinality {
         long hashedValue = hash.hashString(element).asLong();
 
         // Short-circuit if our k-set is saturated. Common case.
-        if (hashedValue < cachedMin.get() && kMap.size() >= sampleSize)
+        if (hashedValue < cachedMin.get() && kMapSize >= sampleSize)
             return false;
 
         synchronized (this) {
-            int mapSize = kMap.size();
-            assert(mapSize <= sampleSize);
+            assert(kMapSize <= sampleSize);
 
-            if (mapSize < sampleSize || hashedValue >= cachedMin.get()) {
+            if (kMapSize < sampleSize || hashedValue >= cachedMin.get()) {
                 Element existing = kMap.get(hashedValue);
                 if (existing != null) {
                     existing.count.incrementAndGet();
                     return false;
                 } else {
-                    long lowestKey = (mapSize > 0) ? kMap.firstKey() : Long.MIN_VALUE;
-                    if (hashedValue > lowestKey || mapSize < sampleSize) {
+                    long lowestKey = (kMapSize > 0) ? kMap.firstKey() : Long.MIN_VALUE;
+                    if (hashedValue > lowestKey || kMapSize < sampleSize) {
                         kMap.put(hashedValue, new Element(element));
+                        kMapSize++;
                         cachedMin.set(lowestKey);
-                        if (kMap.size() > sampleSize) kMap.remove(lowestKey);
+                        if (kMapSize > sampleSize) {
+                            kMap.remove(lowestKey);
+                            kMapSize = sampleSize;
+                        }
                         return true;
                     } else {
                         return false;
