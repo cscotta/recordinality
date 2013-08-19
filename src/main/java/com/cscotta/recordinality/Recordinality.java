@@ -69,9 +69,9 @@ public class Recordinality {
     public double estimateError() {
         double estCardinality = estimateCardinality();
         double error = Math.sqrt(Math.pow(
-            (estCardinality / (sampleSize * Math.E)), (1.0 / sampleSize)) - 1);
+                (estCardinality / (sampleSize * Math.E)), (1.0 / sampleSize)) - 1);
         return error;
-     }
+    }
 
     /*
      * Returns the current set of k-records observed in the stream.
@@ -100,11 +100,15 @@ public class Recordinality {
                     existing.count.incrementAndGet();
                     return false;
                 } else {
-                    kMap.put(hashedValue, new Element(element));
-                    long lowestKey = kMap.firstKey();
-                    cachedMin.set(lowestKey);
-                    if (mapSize == sampleSize) kMap.remove(lowestKey);
-                    return true;
+                    long lowestKey = (mapSize > 0) ? kMap.firstKey() : Long.MIN_VALUE;
+                    if (hashedValue > lowestKey || mapSize < sampleSize) {
+                        kMap.put(hashedValue, new Element(element));
+                        cachedMin.set(lowestKey);
+                        if (kMap.size() > sampleSize) kMap.remove(lowestKey);
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
 
