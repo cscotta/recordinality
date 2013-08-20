@@ -40,16 +40,16 @@ The Recordinality paper includes mean cardinality and error estimates for k-valu
 
 | Size | Paper Mean (Expected: 3031) | Paper Error | Impl Mean (Expected: 3193) | Impl Error | Mean Run Time |
 |--------|---------------------------|-------------|----------------------------|------------|---------------|
-| 4      | 2737 | 1.04 | 3127 | 1.53 | 6ms   |
-| 8      | 2811 | 0.73 | 3205 | 0.88 | 6ms   |
-| 16     | 3040 | 0.54 | 3204 | 0.56 | 7ms   |
-| 32     | 3010 | 0.34 | 3195 | 0.34 | 7ms   |
-| 64     | 3020 | 0.22 | 3200 | 0.22 | 11ms  |
-| 128    | 3042 | 0.14 | 3194 | 0.13 | 17ms  |
-| 256    | 3044 | 0.08 | 3193 | 0.08 | 32ms  |
-| 512    | 3043 | 0.04 | 3191 | 0.04 | 90ms |
+| 4      | 2737 | 1.04 | 3154 | 1.63 | 3ms   |
+| 8      | 2811 | 0.73 | 3187 | 0.91 | 3ms   |
+| 16     | 3040 | 0.54 | 3202 | 0.55 | 3ms   |
+| 32     | 3010 | 0.34 | 3179 | 0.34 | 3ms   |
+| 64     | 3020 | 0.22 | 3197 | 0.22 | 3ms   |
+| 128    | 3042 | 0.14 | 3193 | 0.13 | 4ms   |
+| 256    | 3044 | 0.08 | 3191 | 0.08 | 4ms   |
+| 512    | 3043 | 0.04 | 3192 | 0.04 | 4ms  |
 
-You can run this test yourself by cloning the repo and typing `mvn test`. Here is an example of the expected output: https://gist.github.com/cscotta/8fddc06871d8543df897
+You can run this test yourself by cloning the repo and typing `mvn test`. Here is an example of the expected output: https://gist.github.com/pkwarren/6275129
 
 **Epilogue**
 
@@ -61,4 +61,6 @@ Thanks, Jérémie!
 
 Here are the [slides](https://speakerdeck.com/timonk/philippe-flajolets-contribution-to-streaming-algorithms) presented by Jérémie, along with a [video of the original presentation](http://www.youtube.com/watch?v=Xigaf8npHoI).
 
-**Update:** Thanks to Phillip Warren (@pkwarren) for catching a check against CSLM.size() that should have been short-circuited by a call to cachedMin.get() in the common case. Updated run time stats and performance above following this change. A few more similar changes will follow shortly.
+**Update:** Thanks to Philip Warren (@pkwarren) for catching a check against CSLM.size() that should have been short-circuited by a call to cachedMin.get() in the common case. Updated run time stats and performance above following this change. A few more similar changes will follow shortly.
+
+**Update 2:** A much bigger thanks to Philip for [this commit](https://github.com/cscotta/recordinality/commit/a5579fa6909ee0746d4da9da0efcd6b924a260cc), which removes the use of CSLM.size() entirely. Previously, this implementation's time complexity varied with the size of the k-map. This commit eliminates this covariance. The initial version of this test took a mean of 116ms per run at k-512. Philip's changes bring it down to 4ms.
