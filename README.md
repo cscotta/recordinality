@@ -9,7 +9,7 @@ Determining the number of unique elements that make up a stream is a frequently-
 
 **Recordinality**
 
-Recordinality is unique in that it provides cardinality estimation like HLL, but also offers "distinct value sampling." This means that Recordinality can allow us to fetch a random sample of distinct elements in a stream, invariant to cardinality. Put more succinctly, given a stream of elements containing 1,000,000 occurrences of 'A' and one occurrence each of 'B' - 'Z', the probability of any letter appearing in our sample is equal. Moreover, we can also efficiently store the number of times elements in our distinct sample have been observed. This can help us to understand the distribution of occurrences of elements in our stream. With it, we can answer questions like "do the elements we've sampled present in a power law-like pattern, or is the distribution of occurrences relatively even across the set?"
+Recordinality is unique in that it provides cardinality estimation like HLL, but also offers "distinct value sampling." This means that Recordinality can allow us to fetch a random sample of distinct elements in a stream, invariant to repetition. Put more succinctly, given a stream of elements containing 1,000,000 occurrences of 'A' and one occurrence each of 'B' - 'Z', the probability of any letter appearing in our sample is equal. Moreover, we can also efficiently store the number of times elements in our distinct sample have been observed. This can help us to understand the distribution of occurrences of elements in our stream. With it, we can answer questions like "do the elements we've sampled present in a power law-like pattern, or is the distribution of occurrences relatively even across the set?"
 
 **The Algorithm**
 
