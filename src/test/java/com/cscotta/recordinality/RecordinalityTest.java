@@ -67,7 +67,7 @@ public class RecordinalityTest {
                     long start = System.currentTimeMillis();
                     final double[] results = new double[numRuns];
                     for (int i = 0; i < numRuns; i++) {
-                        Recordinality rec = new Recordinality(kSize);
+                        Recordinality rec = new Recordinality<String>(kSize);
                         for (String line : lines) rec.observe(line);
                         results[i] = rec.estimateCardinality();
                     }
